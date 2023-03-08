@@ -97,6 +97,7 @@ def getfor_rec(request,pk=None):
                 
 def postfor_record(request,pk=None):
     amt = request.GET['amt']
+    amt = int(str(amt).replace(',', ''))
     date = request.GET['date']
     date = str(date).split('-')
     date = date[-1] +'-'+ date[-2] +'-'+ date[-3]
@@ -134,7 +135,7 @@ def postfor_record(request,pk=None):
 def postfor_doc(request):
     name = request.POST['name']
     date = request.POST['date']
-    amt = int(request.POST['amt'])
+    amt = int(str(request.POST['amt']).replace(',', ''))
     daily_amt = amt//100
     record = {
         'objects':[]
