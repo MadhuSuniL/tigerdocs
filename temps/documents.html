@@ -49,7 +49,7 @@
     {% csrf_token %}
      <center>
       <input class="w-[90%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " type='text' name="name" placeholder="Customer Name.." maxlength="13" required><br>
-      <input type='number' class="w-[40%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="amt" placeholder="Given Amount.." required>
+      <input type='text' id="amt" class="w-[40%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="amt" placeholder="Given Amount.." required>
       <input type='date' class="w-[40%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="date" placeholder="Date.." required>
       <input type='submit' value="Create" class="bg-cyan-400 p-1 px-2 text-white text-xl rounded-lg font-bold "><br><br>
       <input type='button' id="del" class="bg-red-400 w-[92%] m-2 p-1 px-2 text-white hover:border-2 hover:border-gray-200 text-xl rounded-lg font-bold " value="Delete Last Document"> 
@@ -69,6 +69,55 @@
     })
       }
   })
+
+  function indian_currency_format(ruppes) {
+    ruppes = Number(String(ruppes).replace(',',''))
+  let final_ruppes = "";
+  let count = 0;
+  if (ruppes < 1000) {
+    return String(ruppes);
+  } else if (ruppes > 999 && ruppes < 9999) {
+    for (let i of String(ruppes)) {
+      if (count == 1) {
+        final_ruppes += "," + i;
+      } else {
+        final_ruppes += i;
+      }
+      count += 1;
+    }
+    return final_ruppes;
+  } else if (ruppes > 9999 && ruppes < 99999) {
+    for (let i of String(ruppes)) {
+      if (count == 2) {
+        final_ruppes += "," + i;
+      } else {
+        final_ruppes += i;
+      }
+      count += 1;
+    }
+    return final_ruppes;
+  } else {
+    for (let i of String(ruppes)) {
+      if (count == 1 || count == 3) {
+        final_ruppes += "," + i;
+      } else {
+        final_ruppes += i;
+      }
+      count += 1;
+    }
+    return final_ruppes;
+  }
+}
+
+
+$('#amt').keyup(function(){
+  setTimeout(function(){
+    document.getElementById('amt').value = indian_currency_format(document.getElementById('amt').value)
+  },200)
+})
+
+
+
 </script>
 
 
