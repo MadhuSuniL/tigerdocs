@@ -57,7 +57,7 @@
     <h1 class="text-2xl text-center font-bold text-cyan-400 m-3">Add Today Record </h1>
       {% csrf_token %}
      <center>
-      <input type='number' id="amt" class="w-[30%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="amt" placeholder="Amount.." required>
+      <input type='text' id="amt" class="w-[30%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="amt" placeholder="Amount.." required>
       <input type='date' id="date" class="w-[40%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="date" placeholder="Date.." required><br>
       <input type='button' id="add" value="Add" class="bg-cyan-400 p-1 px-2 text-white text-xl rounded-lg font-bold "><br><br>
       
@@ -93,6 +93,60 @@
       }
   })
     
+
+
+
+
+  function indian_currency_format(ruppes) {
+    ruppes = Number(String(ruppes).replace(',',''))
+  let final_ruppes = "";
+  let count = 0;
+  if (ruppes < 1000) {
+    return String(ruppes);
+  } else if (ruppes > 999 && ruppes < 9999) {
+    for (let i of String(ruppes)) {
+      if (count == 1) {
+        final_ruppes += "," + i;
+      } else {
+        final_ruppes += i;
+      }
+      count += 1;
+    }
+    return final_ruppes;
+  } else if (ruppes > 9999 && ruppes < 99999) {
+    for (let i of String(ruppes)) {
+      if (count == 2) {
+        final_ruppes += "," + i;
+      } else {
+        final_ruppes += i;
+      }
+      count += 1;
+    }
+    return final_ruppes;
+  } else {
+    for (let i of String(ruppes)) {
+      if (count == 1 || count == 3) {
+        final_ruppes += "," + i;
+      } else {
+        final_ruppes += i;
+      }
+      count += 1;
+    }
+    return final_ruppes;
+  }
+}
+
+
+$('#amt').keyup(function(){
+  setTimeout(function(){
+    document.getElementById('amt').value = indian_currency_format(document.getElementById('amt').value)
+  },200)
+})
+
+
+
+
+
   </script>
   
   
