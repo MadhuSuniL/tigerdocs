@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+  <title>{{name}} - {{amt}} - Records</title>
+  <meta charset="UTF-8">
+  <script src="https://code.jquery.com/jquery-3.6.3.js" integrity="sha256-nQLuAZGRRcILA+6dMBOvcRh5Pe310sBpanc6+QBmyVM=" crossorigin="anonymous"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        td{
+            text-align: center;
+            line-height: 45px
+        }
+        th{
+            text-align: center;
+            line-height: 40px
+        }
+        body{
+            background-color: black
+        }
+    </style>
+</head>
+
+<body>
+  <h1 class="text-2xl text-center font-bold text-cyan-400 m-3">{{name}} - {{amt}} </h1>
+     <div class="flex font-bold justify-between m-2 text-lg text-white">
+         <div>
+         <h1>Name : {{name}}</h1>
+         <h1 class="text-yellow-500">Finshed : {{days}} Days </h1>
+         </div>
+        <div>
+         <h1 class="text-green-300">Amount : {{amt}}</h1>
+         <h1>Date : {{date}} </h1>
+     </div>
+     </div>  
+        <h1 class="text-2xl text-center font-bold text-cyan-400 m-3">Received - {{r_days}}</h1>
+  <div class="m-2 mt-10 border-[3px] shadow-lg shadow-cyan-400 border-cyan-400  text-gray-900 bg-white p-2 rounded-xl">
+      <table class="w-full table-fixed">
+  <thead class="text-2xl rounded-xl text-white bg-cyan-300" >
+    <tr>
+      <th>S.No</th>
+      <th>Date</th>
+      <th>Amount</th>
+    </tr>
+  </thead>
+  <tbody class="text-xl font-bold">
+    <tr>
+      {% for doc in data %}
+      <td>{{forloop.counter}}</td>
+      <td>{{doc.date}}</td>
+      <td class='text-lg'>{{doc.amt}}</td>
+    </tr>
+    {% endfor%}
+  </tbody>
+</table>    
+  </div>
+    <h1 class="text-2xl text-center font-bold text-cyan-400 m-3">Add Today Record </h1>
+      {% csrf_token %}
+     <center>
+      <input type='number' id="amt" class="w-[30%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="amt" placeholder="Amount.." required>
+      <input type='date' id="date" class="w-[40%] m-3 mt-0 text-xl rounded-lg border-2 p-1 border-cyan-400 " name="date" placeholder="Date.." required><br>
+      <input type='button' id="add" value="Add" class="bg-cyan-400 p-1 px-2 text-white text-xl rounded-lg font-bold "><br><br>
+      
+      <input type='button' id="del" class="bg-red-400 w-[92%] m-2 p-1 px-2 text-white hover:border-2 hover:border-gray-200 text-xl rounded-lg font-bold " value="Delete Last Record">
+      <input type='button' onclick="window.location.href='/'" class="bg-green-400 w-[92%] m-2 p-1 px-2 text-white hover:border-2 hover:border-gray-200 text-xl rounded-lg font-bold " value="Go to Documents">
+  </center>
+
+  
+  
+  <script>
+    $('#add').click(function(){
+      $.ajax({
+      url:'/post_rec/{{id}}',
+      data:{
+        amt:document.getElementById('amt').value,
+        date:document.getElementById('date').value
+      },
+      success:function(){
+        window.location.reload()
+      }
+    })
+    })
+
+    $('#del').click(function(){
+    var base = confirm('Are you Sure..? Do you want to delete last record..?')
+      if (base == 1){
+        $.ajax({
+      url:'/delete_last_rec/{{id}}',
+      success:function(){
+        window.location.reload()
+      }
+    })
+      }
+  })
+    
+  </script>
+  
+  
+  
+</body>
+</html>
